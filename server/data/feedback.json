@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1769957498751,
+    "productId": 1,
+    "satisfaction": "I am extremely satisfied with these headphones! The sound quality is amazing and the noise cancellation works perfectly.",
+    "likes": "The battery life is excellent, comfortable to wear for long periods, and the sound quality is outstanding.",
+    "improvements": "Maybe add more color options.",
+    "additionalComments": "Great product overall! Highly recommend to everyone.",
+    "sentiment": "positive",
+    "sentimentScore": 0.5957446808510638,
+    "timestamp": "2026-02-01T14:51:38.751Z"
+  },
+  {
+    "id": 1769957498759,
+    "productId": 1,
+    "satisfaction": "Very happy with my purchase. Love the wireless feature!",
+    "likes": "Excellent sound, great design, comfortable fit.",
+    "improvements": "Could have better packaging.",
+    "additionalComments": "Worth every penny!",
+    "sentiment": "positive",
+    "sentimentScore": 0.8636363636363636,
+    "timestamp": "2026-02-01T14:51:38.759Z"
+  },
+  {
+    "id": 1769957498765,
+    "productId": 2,
+    "satisfaction": "Fantastic smartwatch! Tracks everything I need.",
+    "likes": "Health tracking is accurate, battery lasts long, looks stylish.",
+    "improvements": "More watch faces would be nice.",
+    "additionalComments": "Best smartwatch I have owned!",
+    "sentiment": "positive",
+    "sentimentScore": 0.38461538461538464,
+    "timestamp": "2026-02-01T14:51:38.765Z"
+  },
+  {
+    "id": 1769957498771,
+    "productId": 3,
+    "satisfaction": "Disappointed with the speaker quality. Not as good as advertised.",
+    "likes": "Portable and lightweight.",
+    "improvements": "Sound quality needs major improvement. Bass is weak and volume is low.",
+    "additionalComments": "Would not recommend. Poor value for money.",
+    "sentiment": "neutral",
+    "sentimentScore": 0.03125,
+    "timestamp": "2026-02-01T14:51:38.771Z"
+  },
+  {
+    "id": 1769957498777,
+    "productId": 4,
+    "satisfaction": "It works okay. Does what it says but nothing special.",
+    "likes": "Easy to use, simple interface.",
+    "improvements": "Could have more features.",
+    "additionalComments": "Average product.",
+    "sentiment": "neutral",
+    "sentimentScore": 0.047619047619047616,
+    "timestamp": "2026-02-01T14:51:38.777Z"
+  },
+  {
+    "id": 1769957498784,
+    "productId": 5,
+    "satisfaction": "Perfect for my home office setup! Great ergonomics.",
+    "likes": "Sturdy build, adjustable height, improves posture significantly.",
+    "improvements": "None that I can think of.",
+    "additionalComments": "Highly recommend for anyone working from home!",
+    "sentiment": "positive",
+    "sentimentScore": 0.35714285714285715,
+    "timestamp": "2026-02-01T14:51:38.784Z"
+  },
+  {
+    "id": 1769957498790,
+    "productId": 2,
+    "satisfaction": "Good smartwatch but battery could be better.",
+    "likes": "Nice display, responsive touch.",
+    "improvements": "Battery life needs improvement.",
+    "additionalComments": "Overall good but not perfect.",
+    "sentiment": "positive",
+    "sentimentScore": 0.6,
+    "timestamp": "2026-02-01T14:51:38.790Z"
+  },
+  {
+    "id": 1769957498796,
+    "productId": 3,
+    "satisfaction": "Terrible sound quality. Very disappointed.",
+    "likes": "Nothing much.",
+    "improvements": "Everything about the sound needs work.",
+    "additionalComments": "Waste of money.",
+    "sentiment": "negative",
+    "sentimentScore": -0.25,
+    "timestamp": "2026-02-01T14:51:38.796Z"
+  }
+]
