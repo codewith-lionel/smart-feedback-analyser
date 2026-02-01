@@ -198,6 +198,17 @@ The application comes with 5 pre-configured products:
 - Sentiment analysis uses a simple, pre-trained model
 - All feedback is automatically analyzed upon submission
 
+### Production Considerations
+
+For production deployment, consider adding:
+- Rate limiting on API endpoints to prevent abuse
+- Input validation and sanitization
+- Database instead of JSON file storage (e.g., MongoDB, PostgreSQL)
+- User authentication and authorization
+- Error logging and monitoring
+- Environment-based configuration
+- HTTPS/SSL certificates
+
 ## 🤝 Contributing
 
 Feel free to submit issues and enhancement requests!
