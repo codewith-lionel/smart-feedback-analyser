@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Feedback Analyzer - Customer Feedback</title>
+    <link rel="stylesheet" href="/client/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Smart Feedback Analyzer</h1>
+            <p class="subtitle">Help us improve our products with your valuable feedback</p>
+        </header>
+
+        <div id="products-section">
+            <h2>Our Products</h2>
+            <div id="products-grid" class="products-grid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </div>
+
+        <!-- Feedback Form Modal -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Product Feedback</h2>
+                
+                <form id="feedback-form">
+                    <input type="hidden" id="product-id" name="productId">
+                    
+                    <div class="form-group">
+                        <label for="satisfaction">1. How satisfied are you with the product? *</label>
+                        <textarea id="satisfaction" name="satisfaction" rows="3" required 
+                            placeholder="Share your satisfaction level and overall experience..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="likes">2. What do you like about the product?</label>
+                        <textarea id="likes" name="likes" rows="3" 
+                            placeholder="Tell us what features or aspects you appreciate..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="improvements">3. What should be improved?</label>
+                        <textarea id="improvements" name="improvements" rows="3" 
+                            placeholder="Share your suggestions for improvements..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalComments">4. Any additional comments?</label>
+                        <textarea id="additionalComments" name="additionalComments" rows="3" 
+                            placeholder="Any other thoughts or feedback..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="success-message">
+            <span class="success-icon">✓</span>
+            <span>Thank you! Your feedback has been submitted successfully.</span>
+        </div>
+
+        <footer>
+            <p><a href="/admin">Admin Dashboard</a></p>
+        </footer>
+    </div>
+
+    <script src="/client/script.js"></script>
+</body>
+</html>

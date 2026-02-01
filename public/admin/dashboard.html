@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart Feedback Analyzer</title>
+    <link rel="stylesheet" href="/admin/style.css">
+    <script src="/lib/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>📊 Admin Dashboard</h1>
+            <p>Smart Feedback Analyzer - Product Performance Overview</p>
+        </header>
+
+        <nav class="dashboard-nav">
+            <a href="/" class="nav-link">← Back to Client</a>
+            <button class="btn btn-refresh" onclick="loadAnalytics()">🔄 Refresh Data</button>
+        </nav>
+
+        <div class="stats-overview" id="stats-overview">
+            <!-- Stats cards will be inserted here -->
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-section">
+                <h2>Product Performance Comparison</h2>
+                <p class="chart-description">Compare products based on positive feedback percentage</p>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+
+        <div class="products-analysis" id="products-analysis">
+            <!-- Individual product analyses will be inserted here -->
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>Smart Feedback Analyzer © 2026</p>
+        </footer>
+    </div>
+
+    <script src="/admin/script.js"></script>
+</body>
+</html>
