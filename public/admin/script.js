@@ -4,6 +4,9 @@ const API_BASE = '';
 // Chart instances
 let barChart = null;
 let pieCharts = {};
+let doughnutChart = null;
+let lineChart = null;
+let horizontalBarChart = null;
 
 // Auto-refresh settings
 let autoRefreshInterval = null;
@@ -30,7 +33,10 @@ async function loadAnalytics(showLoading = true) {
         
         if (data.success) {
             displayStatistics(data.analytics);
+            displayDoughnutChart(data.analytics);
             displayBarChart(data.analytics);
+            displayLineChart(data.analytics);
+            displayHorizontalBarChart(data.analytics);
             displayProductAnalysis(data.analytics);
             lastUpdateTime = new Date();
             updateLastRefreshTime();
@@ -286,6 +292,224 @@ function displayBarChart(analytics) {
                 tooltip: {
                     mode: 'index',
                     intersect: false
+                }
+            }
+        }
+    });
+}
+
+// Display doughnut chart for overall sentiment distribution
+function displayDoughnutChart(analytics) {
+    const canvas = document.getElementById('doughnutChart');
+    if (!canvas) {
+        console.error('Doughnut chart canvas not found');
+        return;
+    }
+    
+    // Destroy existing chart if it exists
+    if (doughnutChart) {
+        doughnutChart.destroy();
+    }
+    
+    const totalPositive = analytics.reduce((sum, p) => sum + p.sentimentCounts.positive, 0);
+    const totalNeutral = analytics.reduce((sum, p) => sum + p.sentimentCounts.neutral, 0);
+    const totalNegative = analytics.reduce((sum, p) => sum + p.sentimentCounts.negative, 0);
+    
+    const ctx = canvas.getContext('2d');
+    doughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Positive', 'Neutral', 'Negative'],
+            datasets: [{
+                data: [totalPositive, totalNeutral, totalNegative],
+                backgroundColor: [
+                    '#10b981',
+                    '#f59e0b',
+                    '#ef4444'
+                ],
+                borderColor: '#ffffff',
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        font: {
+                            size: 14,
+                            weight: '600'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Display line chart for average scores
+function displayLineChart(analytics) {
+    const canvas = document.getElementById('lineChart');
+    if (!canvas) {
+        console.error('Line chart canvas not found');
+        return;
+    }
+    
+    // Destroy existing chart if it exists
+    if (lineChart) {
+        lineChart.destroy();
+    }
+    
+    const labels = analytics.map(p => p.productName);
+    const scores = analytics.map(p => Math.round(p.averageSentimentScore || 0));
+    
+    const ctx = canvas.getContext('2d');
+    lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Score (%)',
+                data: scores,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: '#2563eb',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Score: ${context.parsed.y}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Display horizontal bar chart for top performers
+function displayHorizontalBarChart(analytics) {
+    const canvas = document.getElementById('horizontalBarChart');
+    if (!canvas) {
+        console.error('Horizontal bar chart canvas not found');
+        return;
+    }
+    
+    // Destroy existing chart if it exists
+    if (horizontalBarChart) {
+        horizontalBarChart.destroy();
+    }
+    
+    // Sort by average score descending
+    const sorted = [...analytics]
+        .filter(p => p.totalFeedback > 0)
+        .sort((a, b) => b.averageSentimentScore - a.averageSentimentScore);
+    
+    const labels = sorted.map(p => p.productName);
+    const scores = sorted.map(p => Math.round(p.averageSentimentScore || 0));
+    
+    // Color based on score
+    const backgroundColors = scores.map(score => {
+        if (score >= 75) return '#10b981';
+        if (score >= 60) return '#0891b2';
+        if (score >= 40) return '#f59e0b';
+        return '#ef4444';
+    });
+    
+    const ctx = canvas.getContext('2d');
+    horizontalBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Score (%)',
+                data: scores,
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors.map(c => c),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const score = context.parsed.x;
+                            let status = '';
+                            if (score >= 75) status = 'Excellent';
+                            else if (score >= 60) status = 'Good';
+                            else if (score >= 40) status = 'Needs Attention';
+                            else status = 'Critical';
+                            return `${score}% - ${status}`;
+                        }
+                    }
                 }
             }
         }
@@ -883,10 +1107,7 @@ async function deleteFeedback(feedbackId) {
         console.error('Error deleting feedback:', error);
         showUpdateNotification('Error deleting feedback', 'error');
     } finally {
-        hideLoadingIndicator(
-    } catch (error) {
-        console.error('Error deleting feedback:', error);
-        alert('Error deleting feedback');
+        hideLoadingIndicator();
     }
 }
 

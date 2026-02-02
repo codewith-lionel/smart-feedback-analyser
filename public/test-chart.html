@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart Test</title>
+    <script src="/lib/chart.js"></script>
+</head>
+<body>
+    <h1>Chart.js Test</h1>
+    <canvas id="testChart" width="400" height="200"></canvas>
+    
+    <script>
+        console.log('Chart.js loaded:', typeof Chart);
+        console.log('Chart version:', Chart?.version);
+        
+        const canvas = document.getElementById('testChart');
+        console.log('Canvas:', canvas);
+        
+        if (canvas && typeof Chart !== 'undefined') {
+            const ctx = canvas.getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3],
+                        backgroundColor: ['red', 'blue', 'yellow']
+                    }]
+                }
+            });
+            console.log('Chart created:', myChart);
+        } else {
+            console.error('Chart.js not loaded or canvas not found');
+        }
+    </script>
+</body>
+</html>

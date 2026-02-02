@@ -87,9 +87,29 @@
 
             <div class="charts-container">
                 <div class="chart-section">
-                    <h2>Product Performance Comparison</h2>
-                    <p class="chart-description">Compare products based on positive feedback percentage</p>
+                    <h2>📊 Overall Sentiment Distribution</h2>
+                    <p class="chart-description">Total feedback breakdown across all products</p>
+                    <div style="max-width: 400px; margin: 0 auto;">
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h2>📈 Product Performance Comparison</h2>
+                    <p class="chart-description">Compare products based on sentiment counts</p>
                     <canvas id="barChart"></canvas>
+                </div>
+
+                <div class="chart-section">
+                    <h2>🎯 Average Score by Product</h2>
+                    <p class="chart-description">Percentage scores across all products</p>
+                    <canvas id="lineChart"></canvas>
+                </div>
+
+                <div class="chart-section">
+                    <h2>🌟 Top Performing Products</h2>
+                    <p class="chart-description">Products ranked by average score</p>
+                    <canvas id="horizontalBarChart"></canvas>
                 </div>
             </div>
 

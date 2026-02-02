@@ -122,5 +122,253 @@
       "maxScore": 100
     },
     "timestamp": "2026-02-02T06:38:26.526Z"
+  },
+  {
+    "id": 1770029496586,
+    "productId": 3,
+    "satisfaction": "Very Satisfied",
+    "quality": "Excellent",
+    "value": "Strongly Agree",
+    "recommend": "Definitely Yes",
+    "improvements": "Nothing - It's Perfect",
+    "usage": "Daily",
+    "additionalComments": "Best speaker ever!",
+    "sentiment": "positive",
+    "sentimentScore": 5,
+    "sentimentData": {
+      "score": 5,
+      "percentageScore": 100,
+      "classification": "positive",
+      "category": "Highly Positive",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Very Satisfied",
+          "rawScore": 100,
+          "weightedScore": 30,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Excellent",
+          "rawScore": 100,
+          "weightedScore": 25,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Strongly Agree",
+          "rawScore": 100,
+          "weightedScore": 20,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Definitely Yes",
+          "rawScore": 100,
+          "weightedScore": 15,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Nothing - It's Perfect",
+          "rawScore": 100,
+          "weightedScore": 10,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "✓ Customer is satisfied with the product",
+        "✓ Product quality meets expectations",
+        "✓ Good value proposition",
+        "✓ High likelihood of word-of-mouth promotion",
+        "✓ High engagement and product utility",
+        "🌟 Excellent feedback - maintain current standards"
+      ],
+      "totalScore": 100,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T10:51:36.586Z"
+  },
+  {
+    "id": 1770029512771,
+    "productId": 4,
+    "satisfaction": "Dissatisfied",
+    "quality": "Below Average",
+    "value": "Disagree",
+    "recommend": "Probably Not",
+    "improvements": "Durability & Build Quality",
+    "usage": "Occasionally",
+    "additionalComments": "Quality issues",
+    "sentiment": "negative",
+    "sentimentScore": -2.35,
+    "sentimentData": {
+      "score": -2.35,
+      "percentageScore": 27,
+      "classification": "negative",
+      "category": "Negative",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Dissatisfied",
+          "rawScore": 25,
+          "weightedScore": 7.5,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Below Average",
+          "rawScore": 25,
+          "weightedScore": 6.25,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Disagree",
+          "rawScore": 25,
+          "weightedScore": 5,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Probably Not",
+          "rawScore": 25,
+          "weightedScore": 3.75,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Durability & Build Quality",
+          "rawScore": 40,
+          "weightedScore": 4,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "⚠ Customer satisfaction needs immediate attention",
+        "⚠ Quality improvement required",
+        "⚠ Pricing strategy needs review",
+        "⚠ Low recommendation score - critical issue",
+        "→ Focus area: Durability & Build Quality",
+        "🚨 Critical feedback - immediate action required"
+      ],
+      "totalScore": 26.5,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T10:51:52.771Z"
+  },
+  {
+    "id": 1770029513153,
+    "productId": 5,
+    "satisfaction": "Satisfied",
+    "quality": "Good",
+    "value": "Agree",
+    "recommend": "Probably Yes",
+    "improvements": "Design & Appearance",
+    "usage": "Several times a week",
+    "additionalComments": "Good laptop stand",
+    "sentiment": "positive",
+    "sentimentScore": 2.35,
+    "sentimentData": {
+      "score": 2.35,
+      "percentageScore": 74,
+      "classification": "positive",
+      "category": "Positive",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Satisfied",
+          "rawScore": 75,
+          "weightedScore": 22.5,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Good",
+          "rawScore": 75,
+          "weightedScore": 18.75,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Agree",
+          "rawScore": 75,
+          "weightedScore": 15,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Probably Yes",
+          "rawScore": 75,
+          "weightedScore": 11.25,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Design & Appearance",
+          "rawScore": 60,
+          "weightedScore": 6,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "✓ Customer is satisfied with the product",
+        "✓ Product quality meets expectations",
+        "✓ Good value proposition",
+        "✓ High likelihood of word-of-mouth promotion",
+        "→ Focus area: Design & Appearance",
+        "✓ High engagement and product utility"
+      ],
+      "totalScore": 73.5,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T10:51:53.153Z"
+  },
+  {
+    "id": 1770029513540,
+    "productId": 1,
+    "satisfaction": "Satisfied",
+    "quality": "Good",
+    "value": "Agree",
+    "recommend": "Probably Yes",
+    "improvements": "Price & Value",
+    "usage": "Daily",
+    "additionalComments": "Good but a bit pricey",
+    "sentiment": "positive",
+    "sentimentScore": 2.25,
+    "sentimentData": {
+      "score": 2.25,
+      "percentageScore": 73,
+      "classification": "positive",
+      "category": "Positive",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Satisfied",
+          "rawScore": 75,
+          "weightedScore": 22.5,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Good",
+          "rawScore": 75,
+          "weightedScore": 18.75,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Agree",
+          "rawScore": 75,
+          "weightedScore": 15,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Probably Yes",
+          "rawScore": 75,
+          "weightedScore": 11.25,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Price & Value",
+          "rawScore": 50,
+          "weightedScore": 5,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "✓ Customer is satisfied with the product",
+        "✓ Product quality meets expectations",
+        "✓ Good value proposition",
+        "✓ High likelihood of word-of-mouth promotion",
+        "→ Focus area: Price & Value",
+        "✓ High engagement and product utility"
+      ],
+      "totalScore": 72.5,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T10:51:53.540Z"
   }
 ]
