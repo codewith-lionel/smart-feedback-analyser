@@ -24,14 +24,33 @@ router.get('/analytics', (req, res) => {
       const productFeedback = feedbackData.filter(f => f.productId === product.id);
       
       const total = productFeedback.length;
-      const positive = productFeedback.filter(f => f.sentiment === 'positive').length;
-      const negative = productFeedback.filter(f => f.sentiment === 'negative').length;
-      const neutral = productFeedback.filter(f => f.sentiment === 'neutral').length;
       
-      // Calculate average sentiment score
-      const avgScore = total > 0 
-        ? productFeedback.reduce((sum, f) => sum + f.sentimentScore, 0) / total 
-        : 0;
+      // Count by classification (handles both old and new format)
+      let positive = 0, negative = 0, neutral = 0;
+      let totalScore = 0;
+      
+      productFeedback.forEach(f => {
+        // Check for new format
+        if (f.sentimentData && typeof f.sentimentData === 'object') {
+          const classification = f.sentimentData.classification;
+          if (classification === 'positive') positive++;
+          else if (classification === 'negative') negative++;
+          else neutral++;
+          
+          totalScore += f.sentimentData.percentageScore || 0;
+        } 
+        // Fallback to old format
+        else {
+          if (f.sentiment === 'positive') positive++;
+          else if (f.sentiment === 'negative') negative++;
+          else neutral++;
+          
+          totalScore += (f.sentimentScore || 0) * 10 + 50; // Convert old -5 to +5 scale to percentage
+        }
+      });
+      
+      // Calculate average score (percentage 0-100)
+      const avgScore = total > 0 ? totalScore / total : 0;
       
       // Calculate positive percentage
       const positivePercentage = total > 0 ? (positive / total) * 100 : 0;

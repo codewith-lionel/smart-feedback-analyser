@@ -31,26 +31,81 @@
                     
                     <div class="form-group">
                         <label for="satisfaction">1. How satisfied are you with the product? *</label>
-                        <textarea id="satisfaction" name="satisfaction" rows="3" required 
-                            placeholder="Share your satisfaction level and overall experience..."></textarea>
+                        <select id="satisfaction" name="satisfaction" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Very Satisfied">Very Satisfied</option>
+                            <option value="Satisfied">Satisfied</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Dissatisfied">Dissatisfied</option>
+                            <option value="Very Dissatisfied">Very Dissatisfied</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="likes">2. What do you like about the product?</label>
-                        <textarea id="likes" name="likes" rows="3" 
-                            placeholder="Tell us what features or aspects you appreciate..."></textarea>
+                        <label for="quality">2. How would you rate the product quality? *</label>
+                        <select id="quality" name="quality" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Good">Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Below Average">Below Average</option>
+                            <option value="Poor">Poor</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="improvements">3. What should be improved?</label>
-                        <textarea id="improvements" name="improvements" rows="3" 
-                            placeholder="Share your suggestions for improvements..."></textarea>
+                        <label for="value">3. Does the product provide good value for money? *</label>
+                        <select id="value" name="value" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Strongly Agree">Strongly Agree</option>
+                            <option value="Agree">Agree</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Disagree">Disagree</option>
+                            <option value="Strongly Disagree">Strongly Disagree</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="additionalComments">4. Any additional comments?</label>
+                        <label for="recommend">4. Would you recommend this product to others? *</label>
+                        <select id="recommend" name="recommend" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Definitely Yes">Definitely Yes</option>
+                            <option value="Probably Yes">Probably Yes</option>
+                            <option value="Not Sure">Not Sure</option>
+                            <option value="Probably Not">Probably Not</option>
+                            <option value="Definitely Not">Definitely Not</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="improvements">5. What aspect needs the most improvement? *</label>
+                        <select id="improvements" name="improvements" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Design & Appearance">Design & Appearance</option>
+                            <option value="Functionality & Features">Functionality & Features</option>
+                            <option value="Durability & Build Quality">Durability & Build Quality</option>
+                            <option value="Price & Value">Price & Value</option>
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="Nothing - It's Perfect">Nothing - It's Perfect</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usage">6. How often do you use this product? *</label>
+                        <select id="usage" name="usage" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Several times a week">Several times a week</option>
+                            <option value="Once a week">Once a week</option>
+                            <option value="Occasionally">Occasionally</option>
+                            <option value="Rarely">Rarely</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalComments">7. Additional comments (Optional)</label>
                         <textarea id="additionalComments" name="additionalComments" rows="3" 
-                            placeholder="Any other thoughts or feedback..."></textarea>
+                            placeholder="Share any other thoughts..."></textarea>
                     </div>
 
                     <div class="form-actions">

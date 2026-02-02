@@ -39,19 +39,38 @@ async function loadProducts() {
 function displayProducts(products) {
     productsGrid.innerHTML = '';
     
+    if (products.length === 0) {
+        productsGrid.innerHTML = '<p style="text-align: center; color: #666;">No products available at the moment.</p>';
+        return;
+    }
+    
     products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
         productCard.innerHTML = `
             <div class="product-icon">${product.image}</div>
-            <h3>${product.name}</h3>
-            <p>${product.description}</p>
-            <button class="btn btn-primary" onclick="openFeedbackForm(${product.id}, '${product.name}')">
+            <h3>${escapeHtml(product.name)}</h3>
+            <p>${escapeHtml(product.description)}</p>
+            <button class="btn btn-primary" data-product-id="${product.id}" data-product-name="${escapeHtml(product.name)}">
                 Give Feedback
             </button>
         `;
+        
+        // Add click event to button
+        const button = productCard.querySelector('.btn');
+        button.addEventListener('click', () => {
+            openFeedbackForm(product.id, product.name);
+        });
+        
         productsGrid.appendChild(productCard);
     });
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Open feedback form modal
@@ -87,8 +106,11 @@ feedbackForm.addEventListener('submit', async (e) => {
     const formData = {
         productId: productIdInput.value,
         satisfaction: document.getElementById('satisfaction').value,
-        likes: document.getElementById('likes').value,
+        quality: document.getElementById('quality').value,
+        value: document.getElementById('value').value,
+        recommend: document.getElementById('recommend').value,
         improvements: document.getElementById('improvements').value,
+        usage: document.getElementById('usage').value,
         additionalComments: document.getElementById('additionalComments').value
     };
     

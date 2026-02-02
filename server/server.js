@@ -14,22 +14,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Import routes
 const feedbackRoutes = require('./routes/feedback');
 const adminRoutes = require('./routes/admin');
+const productsRoutes = require('./routes/products');
 
 // API Routes
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/admin', adminRoutes);
-
-// GET /api/products - Get all products
-app.get('/api/products', (req, res) => {
-  try {
-    const productsPath = path.join(__dirname, 'data/products.json');
-    const products = JSON.parse(fs.readFileSync(productsPath, 'utf8'));
-    res.json({ success: true, products });
-  } catch (error) {
-    console.error('Error reading products:', error);
-    res.status(500).json({ success: false, message: 'Error loading products' });
-  }
-});
+app.use('/api/products', productsRoutes);
 
 // Serve client pages
 app.get('/', (req, res) => {
