@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management - Smart Feedback Analyzer</title>
+    <link rel="stylesheet" href="/admin/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>📦 Products Management</h1>
+            <p>Manage your product catalog</p>
+        </header>
+
+        <nav class="dashboard-nav">
+            <div class="nav-links">
+                <a href="/admin/dashboard.html" class="nav-link">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/products.html" class="nav-link active">
+                    <span class="nav-icon">📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="/admin/feedbacks.html" class="nav-link">
+                    <span class="nav-icon">💬</span>
+                    <span>Feedback</span>
+                </a>
+                <a href="/" class="nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span>Client View</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="loading-spinner"></div>
+            <p>Processing...</p>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast-notification" class="toast-notification">
+            <span id="toast-message"></span>
+        </div>
+
+        <div class="page-content">
+            <div class="management-header">
+                <div>
+                    <h2>All Products</h2>
+                    <p class="section-description">Add, edit, or remove products from your catalog</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-success" onclick="openProductModal()">
+                        <span>➕</span> Add New Product
+                    </button>
+                    <button class="btn btn-refresh" onclick="loadProducts()">
+                        <span>🔄</span> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-mini">
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="total-products-count">0</div>
+                    <div class="stat-mini-label">Total Products</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="products-with-feedback">0</div>
+                    <div class="stat-mini-label">With Feedback</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="products-without-feedback">0</div>
+                    <div class="stat-mini-label">No Feedback Yet</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Icon</th>
+                            <th>Product Name</th>
+                            <th>Description</th>
+                            <th>Feedback Count</th>
+                            <th>Avg Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <div class="loading-spinner"></div>
+                                <p style="margin-top: 15px; color: #64748b;">Loading products...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Product Modal -->
+        <div id="product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeProductModal()">&times;</span>
+                <h2 id="product-modal-title">Add New Product</h2>
+                <form id="product-form" onsubmit="saveProduct(event)">
+                    <input type="hidden" id="product-id">
+                    
+                    <div class="form-group">
+                        <label for="product-name">Product Name *</label>
+                        <input type="text" id="product-name" required placeholder="e.g., Smartphone X">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-description">Description *</label>
+                        <textarea id="product-description" rows="4" required placeholder="Describe your product..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-image">Icon/Emoji</label>
+                        <input type="text" id="product-image" placeholder="📱" maxlength="2">
+                        <small style="color: #64748b; display: block; margin-top: 5px;">
+                            Use an emoji or leave empty for default 📦
+                        </small>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+                        <button type="submit" class="btn btn-success">
+                            <span id="save-btn-text">Save Product</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>Smart Feedback Analyzer © 2026 | <a href="/admin/dashboard.html">Back to Dashboard</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let allProducts = [];
+        let allFeedback = [];
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+
+        // Load all products and feedback
+        async function loadProducts() {
+            try {
+                showLoadingIndicator();
+                
+                // Fetch products and feedback in parallel
+                const [productsResponse, feedbackResponse] = await Promise.all([
+                    fetch(`${API_BASE}/api/products`),
+                    fetch(`${API_BASE}/api/feedback`)
+                ]);
+
+                const productsData = await productsResponse.json();
+                const feedbackData = await feedbackResponse.json();
+
+                if (productsData.success) {
+                    allProducts = productsData.products;
+                    allFeedback = feedbackData.success ? feedbackData.feedback : [];
+                    displayProductsTable();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showUpdateNotification('Error loading products', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalProducts = allProducts.length;
+            const productsWithFeedback = allProducts.filter(p => 
+                allFeedback.some(f => f.productId === p.id)
+            ).length;
+            const productsWithoutFeedback = totalProducts - productsWithFeedback;
+
+            document.getElementById('total-products-count').textContent = totalProducts;
+            document.getElementById('products-with-feedback').textContent = productsWithFeedback;
+            document.getElementById('products-without-feedback').textContent = productsWithoutFeedback;
+        }
+
+        // Display products in table
+        function displayProductsTable() {
+            const tbody = document.getElementById('products-table-body');
+            
+            if (allProducts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">
+                            <p style="font-size: 1.2em; color: #64748b;">No products found</p>
+                            <button class="btn btn-success" onclick="openProductModal()" style="margin-top: 15px;">
+                                Add Your First Product
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = allProducts.map((product, index) => {
+                const feedbackCount = allFeedback.filter(f => f.productId === product.id).length;
+                const productFeedback = allFeedback.filter(f => f.productId === product.id);
+                
+                let avgScore = 'N/A';
+                if (productFeedback.length > 0) {
+                    const totalScore = productFeedback.reduce((sum, f) => {
+                        if (f.sentimentData && f.sentimentData.percentageScore) {
+                            return sum + f.sentimentData.percentageScore;
+                        }
+                        return sum + ((f.sentimentScore || 0) * 10 + 50);
+                    }, 0);
+                    avgScore = Math.round(totalScore / productFeedback.length) + '%';
+                }
+
+                return `
+                    <tr class="animate-in" style="animation-delay: ${index * 0.05}s">
+                        <td><strong>#${product.id}</strong></td>
+                        <td style="font-size: 1.5em;">${product.image || '📦'}</td>
+                        <td><strong>${product.name}</strong></td>
+                        <td style="max-width: 300px;">${product.description}</td>
+                        <td>
+                            <span class="badge" style="background: #0891b2; color: white;">
+                                ${feedbackCount} feedback${feedbackCount !== 1 ? 's' : ''}
+                            </span>
+                        </td>
+                        <td>
+                            <strong style="color: ${avgScore === 'N/A' ? '#64748b' : '#1e40af'}; font-size: 1.1em;">
+                                ${avgScore}
+                            </strong>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editProduct(${product.id})" title="Edit">
+                                ✏️
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})" title="Delete">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Open product modal
+        function openProductModal() {
+            document.getElementById('product-modal-title').textContent = 'Add New Product';
+            document.getElementById('product-form').reset();
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-modal').style.display = 'block';
+        }
+
+        // Close product modal
+        function closeProductModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        // Edit product
+        async function editProduct(productId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/products/${productId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const product = data.product;
+                    document.getElementById('product-modal-title').textContent = 'Edit Product';
+                    document.getElementById('product-id').value = product.id;
+                    document.getElementById('product-name').value = product.name;
+                    document.getElementById('product-description').value = product.description;
+                    document.getElementById('product-image').value = product.image || '';
+                    document.getElementById('product-modal').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showUpdateNotification('Error loading product', 'error');
+            }
+        }
+
+        // Save product
+        async function saveProduct(event) {
+            event.preventDefault();
+            
+            const productId = document.getElementById('product-id').value;
+            const productData = {
+                name: document.getElementById('product-name').value.trim(),
+                description: document.getElementById('product-description').value.trim(),
+                image: document.getElementById('product-image').value.trim() || '📦'
+            };
+
+            try {
+                showLoadingIndicator();
+                const url = productId 
+                    ? `${API_BASE}/api/products/${productId}` 
+                    : `${API_BASE}/api/products`;
+                const method = productId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showUpdateNotification(data.message, 'success');
+                    closeProductModal();
+                    loadProducts();
+                } else {
+                    showUpdateNotification('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error saving product:', error);
+                showUpdateNotification('Error saving product', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            const feedbackCount = allFeedback.filter(f => f.productId === productId).length;
+            
+            let confirmMessage = `Are you sure you want to delete "${product.name}"?`;
+            if (feedbackCount > 0) {
+                confirmMessage += `\n\nWarning: This will also delete ${feedbackCount} feedback item(s) associated with this product.`;
+            }
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            try {
+                showLoadingIndicator();
+                const response = await fetch(`${API_BASE}/api/products/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showUpdateNotification(data.message, 'success');
+                    loadProducts();
+                } else {
+                    showUpdateNotification('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showUpdateNotification('Error deleting product', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        // Loading indicator
+        function showLoadingIndicator() {
+            document.getElementById('loading-indicator').style.display = 'flex';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loading-indicator').style.display = 'none';
+        }
+
+        // Toast notifications
+        function showUpdateNotification(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.className = 'toast-notification show ' + type;
+            
+            setTimeout(() => {
+                toast.className = 'toast-notification';
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('product-modal');
+            if (event.target === modal) {
+                closeProductModal();
+            }
+        }
+    </script>
+</body>
+</html>

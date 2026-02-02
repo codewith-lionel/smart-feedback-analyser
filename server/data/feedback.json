@@ -1,112 +1,126 @@
 [
   {
-    "id": 1769957498751,
+    "id": 1770013764045,
     "productId": 1,
-    "satisfaction": "I am extremely satisfied with these headphones! The sound quality is amazing and the noise cancellation works perfectly.",
-    "likes": "The battery life is excellent, comfortable to wear for long periods, and the sound quality is outstanding.",
-    "improvements": "Maybe add more color options.",
-    "additionalComments": "Great product overall! Highly recommend to everyone.",
+    "satisfaction": "Very Satisfied",
+    "quality": "Excellent",
+    "value": "Strongly Agree",
+    "recommend": "Definitely Yes",
+    "improvements": "Nothing - It's Perfect",
+    "usage": "Daily",
+    "additionalComments": "",
     "sentiment": "positive",
-    "sentimentScore": 0.5957446808510638,
-    "timestamp": "2026-02-01T14:51:38.751Z"
+    "sentimentScore": 5,
+    "sentimentData": {
+      "score": 5,
+      "percentageScore": 100,
+      "classification": "positive",
+      "category": "Highly Positive",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Very Satisfied",
+          "rawScore": 100,
+          "weightedScore": 30,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Excellent",
+          "rawScore": 100,
+          "weightedScore": 25,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Strongly Agree",
+          "rawScore": 100,
+          "weightedScore": 20,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Definitely Yes",
+          "rawScore": 100,
+          "weightedScore": 15,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Nothing - It's Perfect",
+          "rawScore": 100,
+          "weightedScore": 10,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "✓ Customer is satisfied with the product",
+        "✓ Product quality meets expectations",
+        "✓ Good value proposition",
+        "✓ High likelihood of word-of-mouth promotion",
+        "✓ High engagement and product utility",
+        "🌟 Excellent feedback - maintain current standards"
+      ],
+      "totalScore": 100,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T06:29:24.045Z"
   },
   {
-    "id": 1769957498759,
-    "productId": 1,
-    "satisfaction": "Very happy with my purchase. Love the wireless feature!",
-    "likes": "Excellent sound, great design, comfortable fit.",
-    "improvements": "Could have better packaging.",
-    "additionalComments": "Worth every penny!",
-    "sentiment": "positive",
-    "sentimentScore": 0.8636363636363636,
-    "timestamp": "2026-02-01T14:51:38.759Z"
-  },
-  {
-    "id": 1769957498765,
+    "id": 1770014306526,
     "productId": 2,
-    "satisfaction": "Fantastic smartwatch! Tracks everything I need.",
-    "likes": "Health tracking is accurate, battery lasts long, looks stylish.",
-    "improvements": "More watch faces would be nice.",
-    "additionalComments": "Best smartwatch I have owned!",
-    "sentiment": "positive",
-    "sentimentScore": 0.38461538461538464,
-    "timestamp": "2026-02-01T14:51:38.765Z"
-  },
-  {
-    "id": 1769957498771,
-    "productId": 3,
-    "satisfaction": "Disappointed with the speaker quality. Not as good as advertised.",
-    "likes": "Portable and lightweight.",
-    "improvements": "Sound quality needs major improvement. Bass is weak and volume is low.",
-    "additionalComments": "Would not recommend. Poor value for money.",
+    "satisfaction": "Very Dissatisfied",
+    "quality": "Below Average",
+    "value": "Strongly Disagree",
+    "recommend": "Definitely Not",
+    "improvements": "Design & Appearance",
+    "usage": "Rarely",
+    "additionalComments": "",
     "sentiment": "neutral",
-    "sentimentScore": 0.03125,
-    "timestamp": "2026-02-01T14:51:38.771Z"
-  },
-  {
-    "id": 1769957498777,
-    "productId": 4,
-    "satisfaction": "It works okay. Does what it says but nothing special.",
-    "likes": "Easy to use, simple interface.",
-    "improvements": "Could have more features.",
-    "additionalComments": "Average product.",
-    "sentiment": "neutral",
-    "sentimentScore": 0.047619047619047616,
-    "timestamp": "2026-02-01T14:51:38.777Z"
-  },
-  {
-    "id": 1769957498784,
-    "productId": 5,
-    "satisfaction": "Perfect for my home office setup! Great ergonomics.",
-    "likes": "Sturdy build, adjustable height, improves posture significantly.",
-    "improvements": "None that I can think of.",
-    "additionalComments": "Highly recommend for anyone working from home!",
-    "sentiment": "positive",
-    "sentimentScore": 0.35714285714285715,
-    "timestamp": "2026-02-01T14:51:38.784Z"
-  },
-  {
-    "id": 1769957498790,
-    "productId": 2,
-    "satisfaction": "Good smartwatch but battery could be better.",
-    "likes": "Nice display, responsive touch.",
-    "improvements": "Battery life needs improvement.",
-    "additionalComments": "Overall good but not perfect.",
-    "sentiment": "positive",
-    "sentimentScore": 0.6,
-    "timestamp": "2026-02-01T14:51:38.790Z"
-  },
-  {
-    "id": 1769957498796,
-    "productId": 3,
-    "satisfaction": "Terrible sound quality. Very disappointed.",
-    "likes": "Nothing much.",
-    "improvements": "Everything about the sound needs work.",
-    "additionalComments": "Waste of money.",
-    "sentiment": "negative",
-    "sentimentScore": -0.25,
-    "timestamp": "2026-02-01T14:51:38.796Z"
-  },
-  {
-    "id": 1770007409336,
-    "productId": 1,
-    "satisfaction": "ll",
-    "likes": "llll",
-    "improvements": "lll",
-    "additionalComments": "ll",
-    "sentiment": "neutral",
-    "sentimentScore": 0,
-    "timestamp": "2026-02-02T04:43:29.336Z"
-  },
-  {
-    "id": 1770009056346,
-    "productId": 2,
-    "satisfaction": "cghfvjv",
-    "likes": "ljhkjk",
-    "improvements": "mbbkj",
-    "additionalComments": "jkbjkb",
-    "sentiment": "neutral",
-    "sentimentScore": 0,
-    "timestamp": "2026-02-02T05:10:56.346Z"
+    "sentimentScore": -0.525,
+    "sentimentData": {
+      "score": -0.525,
+      "percentageScore": 45,
+      "classification": "neutral",
+      "category": "Neutral",
+      "breakdown": {
+        "satisfaction": {
+          "answer": "Very Dissatisfied",
+          "rawScore": 50,
+          "weightedScore": 15,
+          "weight": 30
+        },
+        "quality": {
+          "answer": "Below Average",
+          "rawScore": 25,
+          "weightedScore": 6.25,
+          "weight": 25
+        },
+        "value": {
+          "answer": "Strongly Disagree",
+          "rawScore": 50,
+          "weightedScore": 10,
+          "weight": 20
+        },
+        "recommend": {
+          "answer": "Definitely Not",
+          "rawScore": 50,
+          "weightedScore": 7.5,
+          "weight": 15
+        },
+        "improvements": {
+          "answer": "Design & Appearance",
+          "rawScore": 60,
+          "weightedScore": 6,
+          "weight": 10
+        }
+      },
+      "insights": [
+        "⚠ Customer satisfaction needs immediate attention",
+        "⚠ Quality improvement required",
+        "⚠ Pricing strategy needs review",
+        "⚠ Low recommendation score - critical issue",
+        "→ Focus area: Design & Appearance",
+        "⚠ Low usage frequency indicates potential issues"
+      ],
+      "totalScore": 44.75,
+      "maxScore": 100
+    },
+    "timestamp": "2026-02-02T06:38:26.526Z"
   }
 ]

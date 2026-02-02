@@ -458,66 +458,57 @@ function getPerformanceBadge(positivePercentage) {
 window.loadAnalytics = loadAnalytics;
 
 // Section Management
-function showSection(section) {
-    // Hide all sections with fade out
-    const sections = ['analytics-section', 'products-section', 'feedback-section'];
-    sections.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.style.opacity = '0';
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 300);
-        }
-    });
+// ============ AUTO-REFRESH AND UI CONTROLS ============
+
+// Toggle auto-refresh
+function toggleAutoRefresh() {
+    const toggle = document.getElementById('auto-refresh-toggle');
+    const intervalSelect = document.getElementById('refresh-interval');
     
-    // Show selected section with fade in
-    setTimeout(() => {
-        if (section === 'analytics') {
-            const analyticsSection = document.getElementById('analytics-section');
-            analyticsSection.style.display = 'block';
-            setTimeout(() => {
-                analyticsSection.style.opacity = '1';
-            }, 50);
-            loadAnalytics();
-        } else if (section === 'products') {
-            const productsSection = document.getElementById('products-section');
-            productsSection.style.display = 'block';
-            setTimeout(() => {
-                productsSection.style.opacity = '1';
-            }, 50);
-            loadProducts();
-        } else if (section === 'feedback') {
-            const feedbackSection = document.getElementById('feedback-section');
-            feedbackSection.style.display = 'block';
-            setTimeout(() => {
-                feedbackSection.style.opacity = '1';
-            }, 50);
-            loadAllFeedback();
-        }
-    }, 300);
-}
-
-// ============ PRODUCTS MANAGEMENT ============
-
-// Load all products
-async function loadProducts() {
-    try {
-        showLoadingIndicator();
-        const response = await fetch(`${API_BASE}/api/products`);
-        const data = await response.json();
-        
-        if (data.success) {
-            displayProductsTable(data.products);
-        } else {
-            console.error('Failed to load products');
-        }
-    } catch (error) {
-        console.error('Error loading products:', error);
-    } finally {
-        hideLoadingIndicator();
+    if (toggle.checked) {
+        intervalSelect.disabled = false;
+        startAutoRefresh();
+    } else {
+        intervalSelect.disabled = true;
+        stopAutoRefresh();
     }
 }
+
+// Start auto-refresh
+function startAutoRefresh() {
+    const intervalSelect = document.getElementById('refresh-interval');
+    const seconds = parseInt(intervalSelect.value);
+    
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+    }
+    
+    autoRefreshInterval = setInterval(() => {
+        loadAnalytics();
+    }, seconds * 1000);
+}
+
+// Stop auto-refresh
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+}
+
+// Change refresh interval
+document.addEventListener('DOMContentLoaded', () => {
+    const intervalSelect = document.getElementById('refresh-interval');
+    if (intervalSelect) {
+        intervalSelect.addEventListener('change', () => {
+            const toggle = document.getElementById('auto-refresh-toggle');
+            if (toggle && toggle.checked) {
+                stopAutoRefresh();
+                startAutoRefresh();
+            }
+        });
+    }
+});
 
 // Display products in table
 function displayProductsTable(products) {

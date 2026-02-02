@@ -17,20 +17,37 @@
         <nav class="dashboard-nav">
             <a href="/" class="nav-link">← Back to Client</a>
             <button class="btn btn-refresh" onclick="loadAnalytics()">🔄 Refresh Data</button>
-            <button class="btn btn-primary" onclick="showSection('analytics')">📊 Analytics</button>
-            <button class="btn btn-primary" onclick="showSection('products')">📦 Manage Products</button>
-            <button class="btn btn-primary" onclick="showSection('feedback')">💬 Manage Feedback</button>
-            
+            <div class="nav-links">
+                <a href="/admin/dashboard.html" class="nav-link active">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/products.html" class="nav-link">
+                    <span class="nav-icon">📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="/admin/feedbacks.html" class="nav-link">
+                    <span class="nav-icon">💬</span>
+                    <span>Feedback</span>
+                </a>
+                <a href="/" class="nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span>Client View</span>
+                </a>
+            </div>
             <div class="nav-controls">
-                <button class="btn btn-secondary btn-sm" id="auto-refresh-toggle">▶️ Enable Auto-Refresh</button>
-                <select id="refresh-interval" class="refresh-interval-select">
+                <label class="nav-control">
+                    <input type="checkbox" id="auto-refresh-toggle" onchange="toggleAutoRefresh()">
+                    <span>Auto-refresh</span>
+                </label>
+                <select id="refresh-interval" class="refresh-interval" disabled>
                     <option value="15">15s</option>
                     <option value="30" selected>30s</option>
                     <option value="60">1m</option>
                     <option value="120">2m</option>
                     <option value="300">5m</option>
                 </select>
-                <span id="last-update-time" class="last-update-time">Last updated: Never</span>
+                <span id="last-updated" class="last-updated">Never</span>
             </div>
         </nav>
 
@@ -42,6 +59,25 @@
 
         <!-- Update Notification -->
         <div id="update-notification" class="update-notification"></div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="/admin/products.html" class="action-card">
+                <div class="action-icon">📦</div>
+                <div class="action-title">Manage Products</div>
+                <div class="action-description">Add, edit, or remove products</div>
+            </a>
+            <a href="/admin/feedbacks.html" class="action-card">
+                <div class="action-icon">💬</div>
+                <div class="action-title">View Feedback</div>
+                <div class="action-description">Review customer responses</div>
+            </a>
+            <a href="/" class="action-card">
+                <div class="action-icon">🏠</div>
+                <div class="action-title">Client View</div>
+                <div class="action-description">See customer interface</div>
+            </a>
+        </div>
 
         <!-- Analytics Section -->
         <div id="analytics-section" class="section-content">
@@ -60,204 +96,6 @@
             <div class="products-analysis" id="products-analysis">
                 <!-- Individual product analyses will be inserted here -->
             </div>
-        </div>
-
-        <!-- Products Management Section -->
-        <div id="products-section" class="section-content" style="display: none;">
-            <div class="management-header">
-                <h2>📦 Products Management</h2>
-                <button class="btn btn-success" onclick="showProductModal()">+ Add New Product</button>
-            </div>
-            
-            <div class="table-container">
-                <table class="data-table" id="products-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Icon</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-table-body">
-                        <!-- Product rows will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Feedback Management Section -->
-        <div id="feedback-section" class="section-content" style="display: none;">
-            <div class="management-header">
-                <h2>💬 Feedback Management</h2>
-                <button class="btn btn-refresh" onclick="loadAllFeedback()">🔄 Refresh</button>
-            </div>
-            
-            <div class="table-container">
-                <table class="data-table" id="feedback-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Product</th>
-                            <th>Satisfaction</th>
-                            <th>Sentiment</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="feedback-table-body">
-                        <!-- Feedback rows will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Product Modal -->
-        <div id="product-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeProductModal()">&times;</span>
-                <h2 id="product-modal-title">Add New Product</h2>
-                <form id="product-form" onsubmit="saveProduct(event)">
-                    <input type="hidden" id="product-id">
-                    
-                    <div class="form-group">
-                        <label for="product-name">Product Name *</label>
-                        <input type="text" id="product-name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="product-description">Description *</label>
-                        <textarea id="product-description" rows="3" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="product-image">Icon/Emoji</label>
-                        <input type="text" id="product-image" placeholder="📦" maxlength="2">
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save Product</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Feedback Modal -->
-        <div id="feedback-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeFeedbackModal()">&times;</span>
-                <h2 id="feedback-modal-title">View Feedback Details</h2>
-                <form id="feedback-form" onsubmit="saveFeedback(event)">
-                    <input type="hidden" id="feedback-id">
-                    
-                    <div class="form-group">
-                        <label for="feedback-satisfaction">Overall Satisfaction *</label>
-                        <select id="feedback-satisfaction" required>
-                            <option value="">Select...</option>
-                            <option value="Very Satisfied">Very Satisfied</option>
-                            <option value="Satisfied">Satisfied</option>
-                            <option value="Neutral">Neutral</option>
-                            <option value="Dissatisfied">Dissatisfied</option>
-                            <option value="Very Dissatisfied">Very Dissatisfied</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-quality">Product Quality *</label>
-                        <select id="feedback-quality" required>
-                            <option value="">Select...</option>
-                            <option value="Excellent">Excellent</option>
-                            <option value="Good">Good</option>
-                            <option value="Average">Average</option>
-                            <option value="Below Average">Below Average</option>
-                            <option value="Poor">Poor</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-value">Value for Money *</label>
-                        <select id="feedback-value" required>
-                            <option value="">Select...</option>
-                            <option value="Strongly Agree">Strongly Agree</option>
-                            <option value="Agree">Agree</option>
-                            <option value="Neutral">Neutral</option>
-                            <option value="Disagree">Disagree</option>
-                            <option value="Strongly Disagree">Strongly Disagree</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-recommend">Would Recommend? *</label>
-                        <select id="feedback-recommend" required>
-                            <option value="">Select...</option>
-                            <option value="Definitely Yes">Definitely Yes</option>
-                            <option value="Probably Yes">Probably Yes</option>
-                            <option value="Not Sure">Not Sure</option>
-                            <option value="Probably Not">Probably Not</option>
-                            <option value="Definitely Not">Definitely Not</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-improvements">Primary Improvement Area *</label>
-                        <select id="feedback-improvements" required>
-                            <option value="">Select...</option>
-                            <option value="Nothing - It's Perfect">Nothing - It's Perfect</option>
-                            <option value="Design & Appearance">Design & Appearance</option>
-                            <option value="Functionality & Features">Functionality & Features</option>
-                            <option value="Durability & Build Quality">Durability & Build Quality</option>
-                            <option value="Price & Value">Price & Value</option>
-                            <option value="Customer Support">Customer Support</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-usage">Usage Frequency *</label>
-                        <select id="feedback-usage" required>
-                            <option value="">Select...</option>
-                            <option value="Daily">Daily</option>
-                            <option value="Several times a week">Several times a week</option>
-                            <option value="Once a week">Once a week</option>
-                            <option value="Occasionally">Occasionally</option>
-                            <option value="Rarely">Rarely</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-comments">Additional Comments</label>
-                        <textarea id="feedback-comments" rows="3" placeholder="Optional"></textarea>
-                    </div>
-                    
-                    <!-- Insights Display (Read-only) -->
-                    <div class="form-group" id="insights-group" style="display: none;">
-                        <label>AI-Generated Insights</label>
-                        <div id="feedback-insights" class="insights-display"></div>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Close</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="stats-overview" id="stats-overview">
-            <!-- Stats cards will be inserted here -->
-        </div>
-
-        <div class="charts-container">
-            <div class="chart-section">
-                <h2>Product Performance Comparison</h2>
-                <p class="chart-description">Compare products based on positive feedback percentage</p>
-                <canvas id="barChart"></canvas>
-            </div>
-        </div>
-
-        <div class="products-analysis" id="products-analysis">
-            <!-- Individual product analyses will be inserted here -->
         </div>
 
         <footer class="dashboard-footer">

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Management - Smart Feedback Analyzer</title>
+    <link rel="stylesheet" href="/admin/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>💬 Feedback Management</h1>
+            <p>View and manage customer feedback</p>
+        </header>
+
+        <nav class="dashboard-nav">
+            <div class="nav-links">
+                <a href="/admin/dashboard.html" class="nav-link">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/products.html" class="nav-link">
+                    <span class="nav-icon">📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="/admin/feedbacks.html" class="nav-link active">
+                    <span class="nav-icon">💬</span>
+                    <span>Feedback</span>
+                </a>
+                <a href="/" class="nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span>Client View</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="loading-spinner"></div>
+            <p>Processing...</p>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast-notification" class="toast-notification">
+            <span id="toast-message"></span>
+        </div>
+
+        <div class="page-content">
+            <div class="management-header">
+                <div>
+                    <h2>All Feedback</h2>
+                    <p class="section-description">View, edit, and analyze customer feedback responses</p>
+                </div>
+                <div class="header-actions">
+                    <select id="filter-product" class="filter-select" onchange="filterFeedback()">
+                        <option value="all">All Products</option>
+                    </select>
+                    <select id="filter-sentiment" class="filter-select" onchange="filterFeedback()">
+                        <option value="all">All Sentiments</option>
+                        <option value="positive">Positive</option>
+                        <option value="neutral">Neutral</option>
+                        <option value="negative">Negative</option>
+                    </select>
+                    <button class="btn btn-refresh" onclick="loadFeedback()">
+                        <span>🔄</span> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-mini">
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="total-feedback-count">0</div>
+                    <div class="stat-mini-label">Total Feedback</div>
+                </div>
+                <div class="stat-mini-card sentiment-positive">
+                    <div class="stat-mini-value" id="positive-count">0</div>
+                    <div class="stat-mini-label">Positive</div>
+                </div>
+                <div class="stat-mini-card sentiment-neutral">
+                    <div class="stat-mini-value" id="neutral-count">0</div>
+                    <div class="stat-mini-label">Neutral</div>
+                </div>
+                <div class="stat-mini-card sentiment-negative">
+                    <div class="stat-mini-value" id="negative-count">0</div>
+                    <div class="stat-mini-label">Negative</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="feedback-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Satisfaction</th>
+                            <th>Score</th>
+                            <th>Sentiment</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedback-table-body">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <div class="loading-spinner"></div>
+                                <p style="margin-top: 15px; color: #64748b;">Loading feedback...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content modal-large">
+                <span class="close" onclick="closeFeedbackModal()">&times;</span>
+                <h2 id="feedback-modal-title">Feedback Details</h2>
+                
+                <div class="feedback-details-grid">
+                    <div class="feedback-section">
+                        <h3>📊 Response Data</h3>
+                        <form id="feedback-form" onsubmit="saveFeedback(event)">
+                            <input type="hidden" id="feedback-id">
+                            
+                            <div class="form-group">
+                                <label for="feedback-satisfaction">Overall Satisfaction *</label>
+                                <select id="feedback-satisfaction" required>
+                                    <option value="">Select...</option>
+                                    <option value="Very Satisfied">Very Satisfied</option>
+                                    <option value="Satisfied">Satisfied</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Dissatisfied">Dissatisfied</option>
+                                    <option value="Very Dissatisfied">Very Dissatisfied</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-quality">Product Quality *</label>
+                                <select id="feedback-quality" required>
+                                    <option value="">Select...</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Below Average">Below Average</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-value">Value for Money *</label>
+                                <select id="feedback-value" required>
+                                    <option value="">Select...</option>
+                                    <option value="Strongly Agree">Strongly Agree</option>
+                                    <option value="Agree">Agree</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Disagree">Disagree</option>
+                                    <option value="Strongly Disagree">Strongly Disagree</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-recommend">Would Recommend? *</label>
+                                <select id="feedback-recommend" required>
+                                    <option value="">Select...</option>
+                                    <option value="Definitely Yes">Definitely Yes</option>
+                                    <option value="Probably Yes">Probably Yes</option>
+                                    <option value="Not Sure">Not Sure</option>
+                                    <option value="Probably Not">Probably Not</option>
+                                    <option value="Definitely Not">Definitely Not</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-improvements">Primary Improvement Area *</label>
+                                <select id="feedback-improvements" required>
+                                    <option value="">Select...</option>
+                                    <option value="Nothing - It's Perfect">Nothing - It's Perfect</option>
+                                    <option value="Design & Appearance">Design & Appearance</option>
+                                    <option value="Functionality & Features">Functionality & Features</option>
+                                    <option value="Durability & Build Quality">Durability & Build Quality</option>
+                                    <option value="Price & Value">Price & Value</option>
+                                    <option value="Customer Support">Customer Support</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-usage">Usage Frequency *</label>
+                                <select id="feedback-usage" required>
+                                    <option value="">Select...</option>
+                                    <option value="Daily">Daily</option>
+                                    <option value="Several times a week">Several times a week</option>
+                                    <option value="Once a week">Once a week</option>
+                                    <option value="Occasionally">Occasionally</option>
+                                    <option value="Rarely">Rarely</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-comments">Additional Comments</label>
+                                <textarea id="feedback-comments" rows="3" placeholder="Optional"></textarea>
+                            </div>
+                            
+                            <div class="modal-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Close</button>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="feedback-section">
+                        <h3>🤖 AI Analysis</h3>
+                        <div id="feedback-score-display" class="score-display">
+                            <div class="score-badge">
+                                <div class="score-value" id="score-percentage">--</div>
+                                <div class="score-label" id="score-category">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-section" id="breakdown-section">
+                            <h4>Score Breakdown</h4>
+                            <div id="breakdown-content"></div>
+                        </div>
+
+                        <div class="insights-section" id="insights-section">
+                            <h4>💡 Insights</h4>
+                            <div id="feedback-insights" class="insights-display"></div>
+                        </div>
+
+                        <div class="metadata-section">
+                            <h4>📋 Metadata</h4>
+                            <div id="feedback-metadata"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>Smart Feedback Analyzer © 2026 | <a href="/admin/dashboard.html">Back to Dashboard</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let allProducts = [];
+        let allFeedback = [];
+        let filteredFeedback = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeedback();
+        });
+
+        async function loadFeedback() {
+            try {
+                showLoadingIndicator();
+                
+                const [productsResponse, feedbackResponse] = await Promise.all([
+                    fetch(`${API_BASE}/api/products`),
+                    fetch(`${API_BASE}/api/feedback`)
+                ]);
+
+                const productsData = await productsResponse.json();
+                const feedbackData = await feedbackResponse.json();
+
+                if (productsData.success) {
+                    allProducts = productsData.products;
+                    populateProductFilter();
+                }
+
+                if (feedbackData.success) {
+                    allFeedback = feedbackData.feedback;
+                    filteredFeedback = allFeedback;
+                    displayFeedbackTable();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                showUpdateNotification('Error loading feedback', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        function populateProductFilter() {
+            const select = document.getElementById('filter-product');
+            select.innerHTML = '<option value="all">All Products</option>';
+            allProducts.forEach(product => {
+                select.innerHTML += `<option value="${product.id}">${product.name}</option>`;
+            });
+        }
+
+        function filterFeedback() {
+            const productFilter = document.getElementById('filter-product').value;
+            const sentimentFilter = document.getElementById('filter-sentiment').value;
+
+            filteredFeedback = allFeedback.filter(feedback => {
+                const productMatch = productFilter === 'all' || feedback.productId == productFilter;
+                const sentimentMatch = sentimentFilter === 'all' || feedback.sentiment === sentimentFilter;
+                return productMatch && sentimentMatch;
+            });
+
+            displayFeedbackTable();
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = filteredFeedback.length;
+            const positive = filteredFeedback.filter(f => f.sentiment === 'positive').length;
+            const neutral = filteredFeedback.filter(f => f.sentiment === 'neutral').length;
+            const negative = filteredFeedback.filter(f => f.sentiment === 'negative').length;
+
+            document.getElementById('total-feedback-count').textContent = total;
+            document.getElementById('positive-count').textContent = positive;
+            document.getElementById('neutral-count').textContent = neutral;
+            document.getElementById('negative-count').textContent = negative;
+        }
+
+        function displayFeedbackTable() {
+            const tbody = document.getElementById('feedback-table-body');
+            
+            if (filteredFeedback.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">
+                            <p style="font-size: 1.2em; color: #64748b;">No feedback found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredFeedback.map((feedback, index) => {
+                const product = allProducts.find(p => p.id === feedback.productId);
+                const productName = product ? product.name : `Product ${feedback.productId}`;
+                const date = new Date(feedback.timestamp).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                const sentimentData = feedback.sentimentData || feedback.sentiment;
+                let sentimentClass, sentimentText, scoreDisplay;
+                
+                if (typeof sentimentData === 'object' && sentimentData.percentageScore !== undefined) {
+                    const score = sentimentData.percentageScore;
+                    scoreDisplay = `${score}%`;
+                    sentimentText = sentimentData.category || sentimentData.classification;
+                    
+                    if (score >= 75) sentimentClass = 'sentiment-positive';
+                    else if (score >= 40) sentimentClass = 'sentiment-neutral';
+                    else sentimentClass = 'sentiment-negative';
+                } else {
+                    sentimentClass = feedback.sentiment === 'positive' ? 'sentiment-positive' : 
+                                    feedback.sentiment === 'negative' ? 'sentiment-negative' : 'sentiment-neutral';
+                    sentimentText = feedback.sentiment;
+                    scoreDisplay = 'N/A';
+                }
+
+                return `
+                    <tr class="animate-in" style="animation-delay: ${index * 0.03}s">
+                        <td><strong>#${feedback.id}</strong></td>
+                        <td>${productName}</td>
+                        <td>${feedback.satisfaction}</td>
+                        <td>
+                            <strong style="color: #1e40af; font-size: 1.1em;">${scoreDisplay}</strong>
+                        </td>
+                        <td>
+                            <span class="badge ${sentimentClass}">${sentimentText}</span>
+                        </td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="viewFeedback(${feedback.id})" title="View Details">
+                                👁️
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editFeedback(${feedback.id})" title="Edit">
+                                ✏️
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteFeedback(${feedback.id})" title="Delete">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function viewFeedback(feedbackId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/feedback/${feedbackId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const feedback = data.feedback;
+                    displayFeedbackDetails(feedback, true);
+                }
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                showUpdateNotification('Error loading feedback', 'error');
+            }
+        }
+
+        async function editFeedback(feedbackId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/feedback/${feedbackId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const feedback = data.feedback;
+                    displayFeedbackDetails(feedback, false);
+                }
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                showUpdateNotification('Error loading feedback', 'error');
+            }
+        }
+
+        function displayFeedbackDetails(feedback, readOnly = false) {
+            document.getElementById('feedback-modal-title').textContent = readOnly ? 'Feedback Details' : 'Edit Feedback';
+            
+            // Populate form
+            document.getElementById('feedback-id').value = feedback.id;
+            document.getElementById('feedback-satisfaction').value = feedback.satisfaction || '';
+            document.getElementById('feedback-quality').value = feedback.quality || '';
+            document.getElementById('feedback-value').value = feedback.value || '';
+            document.getElementById('feedback-recommend').value = feedback.recommend || '';
+            document.getElementById('feedback-improvements').value = feedback.improvements || '';
+            document.getElementById('feedback-usage').value = feedback.usage || '';
+            document.getElementById('feedback-comments').value = feedback.additionalComments || '';
+
+            // Disable fields if read-only
+            const inputs = document.querySelectorAll('#feedback-form select, #feedback-form textarea');
+            inputs.forEach(input => input.disabled = readOnly);
+            
+            // Show/hide save button
+            const saveBtn = document.querySelector('#feedback-form button[type="submit"]');
+            saveBtn.style.display = readOnly ? 'none' : 'inline-block';
+
+            // Display score
+            if (feedback.sentimentData) {
+                const data = feedback.sentimentData;
+                document.getElementById('score-percentage').textContent = data.percentageScore + '%';
+                document.getElementById('score-category').textContent = data.category;
+                
+                // Color code score
+                const scoreDisplay = document.querySelector('.score-display');
+                if (data.percentageScore >= 75) scoreDisplay.className = 'score-display score-positive';
+                else if (data.percentageScore >= 40) scoreDisplay.className = 'score-display score-neutral';
+                else scoreDisplay.className = 'score-display score-negative';
+
+                // Display breakdown
+                if (data.breakdown) {
+                    let breakdownHTML = '<div class="breakdown-grid">';
+                    for (const [key, value] of Object.entries(data.breakdown)) {
+                        breakdownHTML += `
+                            <div class="breakdown-item">
+                                <div class="breakdown-label">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
+                                <div class="breakdown-answer">${value.answer}</div>
+                                <div class="breakdown-score">${value.rawScore}/100</div>
+                            </div>
+                        `;
+                    }
+                    breakdownHTML += '</div>';
+                    document.getElementById('breakdown-content').innerHTML = breakdownHTML;
+                }
+
+                // Display insights
+                if (data.insights && data.insights.length > 0) {
+                    document.getElementById('feedback-insights').innerHTML = 
+                        data.insights.map(insight => `<p>${insight}</p>`).join('');
+                    document.getElementById('insights-section').style.display = 'block';
+                } else {
+                    document.getElementById('insights-section').style.display = 'none';
+                }
+            }
+
+            // Display metadata
+            const product = allProducts.find(p => p.id === feedback.productId);
+            const metadata = `
+                <p><strong>Product:</strong> ${product ? product.name : 'Unknown'}</p>
+                <p><strong>Submitted:</strong> ${new Date(feedback.timestamp).toLocaleString()}</p>
+                ${feedback.updatedAt ? `<p><strong>Updated:</strong> ${new Date(feedback.updatedAt).toLocaleString()}</p>` : ''}
+                <p><strong>Feedback ID:</strong> #${feedback.id}</p>
+            `;
+            document.getElementById('feedback-metadata').innerHTML = metadata;
+
+            document.getElementById('feedback-modal').style.display = 'block';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').style.display = 'none';
+        }
+
+        async function saveFeedback(event) {
+            event.preventDefault();
+            
+            const feedbackId = document.getElementById('feedback-id').value;
+            const feedbackData = {
+                satisfaction: document.getElementById('feedback-satisfaction').value,
+                quality: document.getElementById('feedback-quality').value,
+                value: document.getElementById('feedback-value').value,
+                recommend: document.getElementById('feedback-recommend').value,
+                improvements: document.getElementById('feedback-improvements').value,
+                usage: document.getElementById('feedback-usage').value,
+                additionalComments: document.getElementById('feedback-comments').value
+            };
+
+            try {
+                showLoadingIndicator();
+                const response = await fetch(`${API_BASE}/api/feedback/${feedbackId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showUpdateNotification(data.message, 'success');
+                    closeFeedbackModal();
+                    loadFeedback();
+                } else {
+                    showUpdateNotification('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error saving feedback:', error);
+                showUpdateNotification('Error saving feedback', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        async function deleteFeedback(feedbackId) {
+            if (!confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                showLoadingIndicator();
+                const response = await fetch(`${API_BASE}/api/feedback/${feedbackId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showUpdateNotification(data.message, 'success');
+                    loadFeedback();
+                } else {
+                    showUpdateNotification('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting feedback:', error);
+                showUpdateNotification('Error deleting feedback', 'error');
+            } finally {
+                hideLoadingIndicator();
+            }
+        }
+
+        function showLoadingIndicator() {
+            document.getElementById('loading-indicator').style.display = 'flex';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loading-indicator').style.display = 'none';
+        }
+
+        function showUpdateNotification(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.className = 'toast-notification show ' + type;
+            
+            setTimeout(() => {
+                toast.className = 'toast-notification';
+            }, 3000);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('feedback-modal');
+            if (event.target === modal) {
+                closeFeedbackModal();
+            }
+        }
+    </script>
+</body>
+</html>
