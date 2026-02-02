@@ -124,68 +124,6 @@
     "timestamp": "2026-02-02T06:38:26.526Z"
   },
   {
-    "id": 1770029496586,
-    "productId": 3,
-    "satisfaction": "Very Satisfied",
-    "quality": "Excellent",
-    "value": "Strongly Agree",
-    "recommend": "Definitely Yes",
-    "improvements": "Nothing - It's Perfect",
-    "usage": "Daily",
-    "additionalComments": "Best speaker ever!",
-    "sentiment": "positive",
-    "sentimentScore": 5,
-    "sentimentData": {
-      "score": 5,
-      "percentageScore": 100,
-      "classification": "positive",
-      "category": "Highly Positive",
-      "breakdown": {
-        "satisfaction": {
-          "answer": "Very Satisfied",
-          "rawScore": 100,
-          "weightedScore": 30,
-          "weight": 30
-        },
-        "quality": {
-          "answer": "Excellent",
-          "rawScore": 100,
-          "weightedScore": 25,
-          "weight": 25
-        },
-        "value": {
-          "answer": "Strongly Agree",
-          "rawScore": 100,
-          "weightedScore": 20,
-          "weight": 20
-        },
-        "recommend": {
-          "answer": "Definitely Yes",
-          "rawScore": 100,
-          "weightedScore": 15,
-          "weight": 15
-        },
-        "improvements": {
-          "answer": "Nothing - It's Perfect",
-          "rawScore": 100,
-          "weightedScore": 10,
-          "weight": 10
-        }
-      },
-      "insights": [
-        "✓ Customer is satisfied with the product",
-        "✓ Product quality meets expectations",
-        "✓ Good value proposition",
-        "✓ High likelihood of word-of-mouth promotion",
-        "✓ High engagement and product utility",
-        "🌟 Excellent feedback - maintain current standards"
-      ],
-      "totalScore": 100,
-      "maxScore": 100
-    },
-    "timestamp": "2026-02-02T10:51:36.586Z"
-  },
-  {
     "id": 1770029512771,
     "productId": 4,
     "satisfaction": "Dissatisfied",
